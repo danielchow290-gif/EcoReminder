@@ -13,8 +13,12 @@ body {
   padding-top: 50px;
 }
 
+h1 {
+  font-size: 30px;
+}
+
 #jam {
-  font-size: 40px;
+  font-size: 45px;
   margin: 20px;
 }
 
@@ -25,6 +29,7 @@ button {
   border-radius: 10px;
   background: white;
   color: #2e7d32;
+  margin: 5px;
 }
 
 input {
@@ -47,15 +52,16 @@ input {
 <br><br>
 <button onclick="simpanJam()">💾 Simpan Jam</button>
 
-<br><br>
+<br>
 <button onclick="ingat()">🔔 Tes Alarm</button>
 
 <script>
+// format 2 digit
 function format(n){
-  return n<10 ? "0"+n : n;
+  return n < 10 ? "0" + n : n;
 }
 
-// jam realtime
+// JAM REALTIME
 setInterval(function(){
   var w = new Date();
   document.getElementById("jam").innerHTML =
@@ -64,19 +70,25 @@ setInterval(function(){
     format(w.getSeconds());
 },1000);
 
-// simpan jam ke memori
+// SIMPAN JAM
 function simpanJam(){
   var jam = document.getElementById("setJam").value;
+
+  if(!jam){
+    alert("Pilih jam dulu!");
+    return;
+  }
+
   localStorage.setItem("jamReminder", jam);
   alert("Jam disimpan: " + jam);
 }
 
-// tombol tes
+// TES MANUAL
 function ingat(){
   alert("Saatnya buang sampah! ♻️");
 }
 
-// cek alarm
+// AUTO REMINDER (FIX TOTAL)
 var sudah = false;
 
 setInterval(function(){
@@ -84,20 +96,21 @@ setInterval(function(){
   var jam = localStorage.getItem("jamReminder");
 
   if(jam){
-    var jamSplit = jam.split(":");
-    var j = parseInt(jamSplit[0]);
-    var m = parseInt(jamSplit[1]);
+    var split = jam.split(":");
+    var j = parseInt(split[0]);
+    var m = parseInt(split[1]);
 
-    if(w.getHours()==j && w.getMinutes()==m && !sudah){
+    if(w.getHours() == j && w.getMinutes() == m && !sudah){
       alert("EcoReminder: Buang sampah sekarang! ♻️");
       sudah = true;
     }
 
-    if(w.getMinutes()!=m){
+    // reset biar bisa muncul lagi besok
+    if(w.getMinutes() != m){
       sudah = false;
     }
   }
-},60000);
+},1000);
 </script>
 
 </body>
