@@ -1,16 +1,89 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        <meta name="viewport" content="user-scalable=no">
-        <link rel="icon" href="icon/icon.png" type="image/png">
-        <link rel="apple-touch-icon" href="icon/icon.png">
-        <link rel="stylesheet" type="text/css" href="css/game.css">
-        <title>メスガキ義妹♡負け負け誘惑性活</title>
-    </head>
-    <body style="background-color: black">
-        <script type="text/javascript" src="js/main.js"></script>
-    </body>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoReminder AI</title>
+
+<style>
+body {
+  text-align: center;
+  font-family: sans-serif;
+  background: linear-gradient(to bottom, #a8e063, #56ab2f);
+  color: white;
+  padding-top: 50px;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+#jam {
+  font-size: 40px;
+  margin: 20px;
+}
+
+button {
+  padding: 15px 25px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  background: white;
+  color: #2e7d32;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #e0f2f1;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>♻️ EcoReminder AI</h1>
+<h2 id="jam"></h2>
+
+<p>Jangan lupa buang sampah hari ini! 🌱</p>
+
+<button onclick="ingat()">🔔 Ingatkan Sekarang</button>
+
+<script>
+// Format 2 digit
+function format(n){
+  return n < 10 ? "0" + n : n;
+}
+
+// Jam realtime
+setInterval(function(){
+  var waktu = new Date();
+  document.getElementById("jam").innerHTML =
+    format(waktu.getHours()) + ":" +
+    format(waktu.getMinutes()) + ":" +
+    format(waktu.getSeconds());
+},1000);
+
+// Tombol manual
+function ingat(){
+  alert("Saatnya buang sampah! ♻️");
+}
+
+// Auto reminder jam 06:00 (anti spam)
+var sudah = false;
+
+setInterval(function(){
+  var waktu = new Date();
+
+  if(waktu.getHours() == 6 && waktu.getMinutes() == 0 && !sudah){
+    alert("EcoReminder: Buang sampah sekarang! ♻️");
+    sudah = true;
+  }
+
+  if(waktu.getMinutes() != 0){
+    sudah = false;
+  }
+},60000);
+</script>
+
+</body>
 </html>
