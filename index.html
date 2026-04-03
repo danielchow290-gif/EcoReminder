@@ -13,30 +13,27 @@ body {
   padding-top: 50px;
 }
 
-h1 {
-  font-size: 30px;
-}
-
 #jam {
   font-size: 40px;
   margin: 20px;
 }
 
 button {
-  padding: 15px 25px;
-  font-size: 18px;
+  padding: 12px 20px;
+  font-size: 16px;
   border: none;
   border-radius: 10px;
   background: white;
   color: #2e7d32;
-  cursor: pointer;
 }
 
-button:hover {
-  background: #e0f2f1;
+input {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
 }
 </style>
-
 </head>
 
 <body>
@@ -44,43 +41,61 @@ button:hover {
 <h1>♻️ EcoReminder AI</h1>
 <h2 id="jam"></h2>
 
-<p>Jangan lupa buang sampah hari ini! 🌱</p>
+<p>Atur jam buang sampah:</p>
+<input type="time" id="setJam">
 
-<button onclick="ingat()">🔔 Ingatkan Sekarang</button>
+<br><br>
+<button onclick="simpanJam()">💾 Simpan Jam</button>
+
+<br><br>
+<button onclick="ingat()">🔔 Tes Alarm</button>
 
 <script>
-// Format 2 digit
 function format(n){
-  return n < 10 ? "0" + n : n;
+  return n<10 ? "0"+n : n;
 }
 
-// Jam realtime
+// jam realtime
 setInterval(function(){
-  var waktu = new Date();
+  var w = new Date();
   document.getElementById("jam").innerHTML =
-    format(waktu.getHours()) + ":" +
-    format(waktu.getMinutes()) + ":" +
-    format(waktu.getSeconds());
+    format(w.getHours()) + ":" +
+    format(w.getMinutes()) + ":" +
+    format(w.getSeconds());
 },1000);
 
-// Tombol manual
+// simpan jam ke memori
+function simpanJam(){
+  var jam = document.getElementById("setJam").value;
+  localStorage.setItem("jamReminder", jam);
+  alert("Jam disimpan: " + jam);
+}
+
+// tombol tes
 function ingat(){
   alert("Saatnya buang sampah! ♻️");
 }
 
-// Auto reminder jam 06:00 (anti spam)
+// cek alarm
 var sudah = false;
 
 setInterval(function(){
-  var waktu = new Date();
+  var w = new Date();
+  var jam = localStorage.getItem("jamReminder");
 
-  if(waktu.getHours() == 6 && waktu.getMinutes() == 0 && !sudah){
-    alert("EcoReminder: Buang sampah sekarang! ♻️");
-    sudah = true;
-  }
+  if(jam){
+    var jamSplit = jam.split(":");
+    var j = parseInt(jamSplit[0]);
+    var m = parseInt(jamSplit[1]);
 
-  if(waktu.getMinutes() != 0){
-    sudah = false;
+    if(w.getHours()==j && w.getMinutes()==m && !sudah){
+      alert("EcoReminder: Buang sampah sekarang! ♻️");
+      sudah = true;
+    }
+
+    if(w.getMinutes()!=m){
+      sudah = false;
+    }
   }
 },60000);
 </script>
